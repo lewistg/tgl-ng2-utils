@@ -50,10 +50,13 @@ function! s:OpenComponentFilesStacked()
     echom "Opening the files"
 endfunction
 
-function! TglNg2OpenComponentFiles()
+function! s:TglNg2OpenComponentFiles()
     if s:SingleComponentFileOpen()
         call s:OpenComponentFilesCircularTiling()
     else
         call s:OpenComponentFilesStack()
     endif
 endfunction
+
+" Public commands
+command TglNg2OpenComponent call s:TglNg2OpenComponentFiles()
