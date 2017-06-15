@@ -1,3 +1,17 @@
+let s:classFileExtensions = ["component.ts"]
+let s:templateFileExtensions = ["component.html", "html"]
+let s:stylesFileExtensions = ["component.less", "less"]
+
+function! s:GetComponentFilenameWithExtension(commonFilename, fileExtensions)
+    for extension in a:fileExtensions
+        let fileNameWithExtension = a:commonFilename . "." . extension
+        if filereadable(fileNameWithExtension)
+            return fileNameWithExtension
+        endif
+    endfor
+    return a:commonFilename . "." . a:fileExtensions[0]
+endfunction
+
 function! s:SingleComponentFileOpen()
     if !filereadable(expand("%"))
         return 0
@@ -27,9 +41,9 @@ endfunction
 function! s:OpenComponentFilesCircularTiling()
     let commonFilename = substitute(expand("%"), "\\..*$", "", "g")
 
-    let componentFilename = commonFilename . ".component.ts"
-    let styleFilename = commonFilename . ".less"
-    let templateFilename = commonFilename . ".html"
+    let componentFilename = s:GetComponentFilenameWithExtension(commonFilename, s:classFileExtensions)
+    let styleFilename = s:GetComponentFilenameWithExtension(commonFilename, s:stylesFileExtensions)
+    let templateFilename = s:GetComponentFilenameWithExtension(commonFilename, s:templateFileExtensions)
 
     let alreadyOpenFilename = expand("%")
 
@@ -59,4 +73,4 @@ function! s:TglNg2OpenComponentFiles()
 endfunction
 
 " Public commands
-command TglNg2OpenComponent call s:TglNg2OpenComponentFiles()
+command! TglNg2OpenComponent call s:TglNg2OpenComponentFiles()
