@@ -72,5 +72,13 @@ function! s:TglNg2OpenComponentFiles()
     endif
 endfunction
 
+" Converts the <cWORD> to an html tag
+function! s:currentWORDToTag()
+    let @x = expand("<cWORD>")
+    let @x = "<" . @x . "></" . @x . ">"
+    normal! BdW"xp
+endfunction
+
 " Public commands
 command! TglNg2OpenComponent call s:TglNg2OpenComponentFiles()
+command! TglNg2ToTag call s:currentWORDToTag()
